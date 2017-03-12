@@ -1,21 +1,19 @@
 #include "LED.h"
 
-LED::LED(uint8_t pin_number){
-  pin = pin_number;
-}
+LED::LED(uint8_t pin_number){pin = pin_number;}
 
-void LED::Switch(bool sw){
-  digitalWrite(pin, sw);
-}
+void LED::ON(){digitalWrite(pin, LED_ON);}
+
+void LED::OFF(){digitalWrite(pin, LED_OFF);}
 
 void LED::init(){
   pinMode(pin,OUTPUT);
-  Switch(LED_OFF);
+  OFF();
 }
 
 void LED::flash(uint32_t delay_time){
-  Switch(LED_ON);
+  ON();
   delay(delay_time);
-  Switch(LED_OFF);
+  OFF();
   delay(delay_time);
 }
