@@ -7,7 +7,12 @@
     Upload speed: "115200"
 */
 
+#include "LED.h"
+#include "time_zone.h"
+#include "time_func.h"
 #include "wifi_func.h"
+
+UTC_TZ local_tz(1,0,1);
 
 LED led(2);                                 // ESP8266 HUZZAH on-board LED at pin 2
 
@@ -16,19 +21,21 @@ char* password = "password";                // WiFi password
 char* host = "time.nist.gov";               // NIST time server
 uint16_t http_port = 37;                    // port 37: RFC868 (returns 32-bit unsigned integer)
 
-void setup() {
+void setup(){
   Serial.begin(115200);
   led.init();
   delay(100);
 }
 
 void loop(){
-  uint32_t NIST_time = request_time(ssid, password, host, http_port, led);
-  setTime(NIST_time);
+  setTime(request_time(ssid, password, host, http_port, led));
+
+  Serial.print("UTC time:\t");
+  Serial.println(daytime_UTC());
+
+  Serial.print("Local time:\t");
+  Serial.println(daytime_local(local_tz));
   
-  Serial.print("Converted:\t");
-  Serial_print_time();
-  Serial.println();
-  
+  led.OFF();
   delay(5000);  // avoid refusal from server due to very frequent requests
 }

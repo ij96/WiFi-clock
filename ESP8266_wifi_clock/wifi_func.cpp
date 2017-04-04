@@ -58,18 +58,17 @@ uint32_t request_time(char* ssid, char* password, char* host, uint16_t http_port
 
   if(connect_to_host(client, host, http_port, 5)){        // if connected to host
     send_time_request(client);                            // send request to server
-    delay(500);                                           // wait for response
-    
-    byte t_buf[4];                                        // read response (4 bytes)
+    delay(100);                                           // wait for response
+
+    byte t_buf[4];                                        // buffer to store response (4 bytes)
     while(client.available()) client.readBytes(t_buf, 4); // save response
+
+    client.stop();                                        // disconnect from WiFi network
     
     uint32_t t = 0;                                       // convert 4-byte buffer into uint32_t
     for(uint8_t i=0; i<4; i++) t += t_buf[i] << 8*(3-i);
-  
-    Serial.print("Raw HEX:\t");
-    Serial.println(t, HEX);
-    
-    t -= EPOCH_OFFSET;                                    // remove epoch offset, so time starts on 1970-01-01
+
+    t -= NIST_EPOCH_OFFSET;                               // remove epoch offset, so time starts on 1970-01-01
     return t;
   }
   return -1;

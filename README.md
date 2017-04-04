@@ -1,2 +1,2 @@
 # WiFi-clock
-WiFi clock using Arduino UNO and ESP8266 HUZZAH
+WiFi clock using ESP8266 HUZZAH

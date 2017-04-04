@@ -1,5 +1,5 @@
-#ifndef WiFi_func_h
-#define WiFi_func_h
+#ifndef WIFI_FUNC_H
+#define WIFI_FUNC_H
 
 #include "Arduino.h"
 #include <ESP8266WiFi.h>
